@@ -3,6 +3,7 @@
 A comprehensive design system and component library for Goose 2.0, showcasing all UI components used in the desktop application.
 
 ## Overview
+<img width="1585" height="969" alt="Screenshot 2026-03-05 at 12 28 16 PM" src="https://github.com/user-attachments/assets/699c1405-a7aa-45f2-aeec-d7e9c0840d80" />
 
 This playground provides interactive previews of all components in the Goose 2.0 design system, including:
 
