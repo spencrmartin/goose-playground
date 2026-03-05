@@ -1,0 +1,293 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   Goose 2.0 Design Tokens
+   Based on Brian Visual Language
+   Monochrome system with configurable accents
+   ============================================ */
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 98%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --radius: 0.75rem;
+
+    /* Goose-specific tokens */
+    --sidebar-width: 240px;
+    --panel-width: 400px;
+    --header-height: 48px;
+    --input-height: 56px;
+
+    /* Status colors */
+    --status-success: 142 76% 36%;
+    --status-warning: 38 92% 50%;
+    --status-error: 0 84% 60%;
+    --status-info: 221 83% 53%;
+
+    /* Accent (configurable by user) */
+    --user-accent: 239 84% 67%;
+  }
+
+  .dark {
+    --background: 0 0% 5%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.2);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.4);
+}
+
+/* Shimmer animation for loading states */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--muted)) 25%,
+    hsl(var(--muted-foreground) / 0.1) 50%,
+    hsl(var(--muted)) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite linear;
+}
+
+/* Gradient text utility */
+.gradient-text {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--foreground)) 0%,
+    hsl(var(--muted-foreground)) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Accent color utilities */
+.accent-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: hsl(var(--user-accent));
+}
+
+.accent-border {
+  border-color: hsl(var(--user-accent) / 0.5);
+}
+
+.accent-text {
+  color: hsl(var(--user-accent));
+}
+
+.accent-bg {
+  background: hsl(var(--user-accent) / 0.1);
+}
+
+/* Status dot indicators */
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-dot.connected {
+  background: hsl(var(--status-success));
+}
+
+.status-dot.disconnected {
+  background: hsl(var(--muted-foreground) / 0.3);
+}
+
+.status-dot.loading {
+  background: hsl(var(--status-warning));
+  animation: pulse-subtle 2s ease-in-out infinite;
+}
+
+/* Tool call pill styles */
+.tool-pill {
+  @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs;
+  @apply bg-muted text-muted-foreground border border-border;
+  @apply transition-all duration-150 cursor-pointer;
+}
+
+.tool-pill:hover {
+  @apply bg-accent text-accent-foreground;
+}
+
+.tool-pill.executing {
+  @apply border-border;
+  background: hsl(var(--status-warning) / 0.08);
+}
+
+.tool-pill.completed {
+  @apply border-border;
+}
+
+.tool-pill.error {
+  background: hsl(var(--status-error) / 0.08);
+  border-color: hsl(var(--status-error) / 0.2);
+}
+
+/* Thinking block styles */
+.thinking-block {
+  @apply pl-3 border-l-2 border-border;
+  @apply text-muted-foreground text-sm italic;
+}
+
+/* Message styles */
+.message-user {
+  @apply text-foreground max-w-[80%];
+}
+
+.message-agent {
+  @apply text-foreground/80 max-w-[85%];
+}
+
+/* Inline app card */
+.app-card {
+  @apply bg-card border border-border rounded-xl overflow-hidden;
+  @apply transition-all duration-150;
+}
+
+.app-card:hover {
+  @apply border-muted-foreground/20;
+}
+
+/* Floating chat input */
+.floating-input {
+  @apply bg-card border border-border rounded-2xl shadow-lg;
+  @apply transition-all duration-150;
+}
+
+.floating-input:focus-within {
+  @apply border-muted-foreground/30 shadow-xl;
+}
+
+.floating-input textarea:focus-visible,
+.floating-input textarea:focus {
+  @apply outline-none ring-0 ring-offset-0;
+}
+
+/* Drag region for Tauri window */
+[data-tauri-drag-region] {
+  -webkit-app-region: drag;
+}
+
+[data-tauri-drag-region] button,
+[data-tauri-drag-region] a,
+[data-tauri-drag-region] input {
+  -webkit-app-region: no-drag;
+}
+
+/* Focus styles */
+*:focus-visible {
+  @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+}
+
+/* Selection */
+::selection {
+  background: hsl(var(--user-accent) / 0.2);
+  color: hsl(var(--foreground));
+}
+
+/* Code snippet styling */
+.code-block {
+  @apply bg-muted rounded-md p-3 text-sm font-mono overflow-x-auto;
+  @apply border border-border;
+}
+
+.code-inline {
+  @apply bg-muted px-1.5 py-0.5 rounded text-sm font-mono;
+}
+
+/* Pulse animation for active states */
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* ─── Thin scrollbars ─────────────────────────────────────── */
+/* Webkit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.2);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.35);
+}
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--muted-foreground) / 0.2) transparent;
+}
